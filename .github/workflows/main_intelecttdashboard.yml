@@ -72,4 +72,3 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'intelecttdashboard'
-          slot-name: 'Production'
