@@ -1,0 +1,18 @@
+employee-dashboard-project/
+│
+├── frontend/                          # For Azure Static Web Apps
+│   ├── index.html
+│   ├── script.js
+│   ├── styles.css
+│   └── images.jpg                      # Optional (logo or other images)
+│
+├── backend/                           # For Azure App Service (Flask)
+│   ├── api/
+│   │   └── login/
+│   │       └── api.py
+│   │
+│   ├── package.py                      # Entry point for Azure App Service
+│   ├── requirements.txt                # Dependencies for Flask App
+│   └── startup.sh                      # Gunicorn startup script
+│
+└── README.md                          # Optional (Project documentation)

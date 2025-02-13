@@ -3,11 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
-CORS(app)  # Allow frontend-backend connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///employees.db'  
-app.config['JWT_SECRET_KEY'] = 'supersecretkey'  
+CORS(app)
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'employees.db')
+app.config['JWT_SECRET_KEY'] = 'supersecretkey'
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -34,12 +37,10 @@ class Employee(db.Model):
 with app.app_context():
     db.create_all()
 
-# ✅ Default Homepage to Check if API is Running
 @app.route('/', methods=['GET'])
 def home():
     return jsonify({"message": "Flask API is running!"})
 
-# ✅ User Signup API
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.json
@@ -55,7 +56,6 @@ def signup():
     db.session.commit()
     return jsonify({"message": "Signup successful!"}), 201
 
-# ✅ User Login API
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
@@ -67,10 +67,8 @@ def login():
 
     return jsonify({"message": "Invalid credentials"}), 401
 
-# ✅ Test if API is running properly
 @app.route('/test', methods=['GET'])
 def test_api():
     return jsonify({"message": "Test API works!"})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# No app.run() needed for Azure App Service
